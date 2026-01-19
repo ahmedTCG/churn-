@@ -25,3 +25,19 @@ artifacts/
 outputs/
 *.parquet
 *.joblib
+
+# --- keep folder structure but ignore generated contents ---
+data/raw/*
+data/processed/*
+data/features/*
+artifacts/*
+outputs/*
+notebook_exports/*
+
+# keep placeholder files so folders exist in git
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/features/.gitkeep
+!artifacts/.gitkeep
+!outputs/.gitkeep
+!notebook_exports/.gitkeep
