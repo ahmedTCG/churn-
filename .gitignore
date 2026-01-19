@@ -1,0 +1,27 @@
+.venv/
+__pycache__/
+.DS_Store
+
+data/
+outputs/
+artifacts/
+
+*.parquet
+*.joblib
+*.csv
+
+.venv/
+__pycache__/
+.DS_Store
+
+# generated notebook exports
+notebook_exports/
+
+# --- data / outputs (never commit large files) ---
+data/raw/
+data/processed/
+data/features/
+artifacts/
+outputs/
+*.parquet
+*.joblib
