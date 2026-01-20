@@ -23,7 +23,32 @@ STRONG_SIGNAL_EVENTS_1 = [
     "emarsys_sessions_view",
     "order",
 ]
+ALL_INTERACTION_EVENTS = [
+    "emarsys_open",
+    "emarsys_click",
+    "emarsys_unsub",
+    "emarsys_cancel",
+    "emarsys_soft_bounce",
+    "emarsys_block_bounce",
+    "emarsys_hard_bounce",
+
+    "emarsys_sessions_view",
+    "emarsys_sessions_purchase",
+    "emarsys_sessions_cart_update",
+    "emarsys_sessions_category_view",
+
+    "emarsys_sessions_content_url",
+    "emarsys_sessions_content_category",
+    "emarsys_sessions_content_tag",
+    "emarsys_sessions_content_title",
+
+    "emarsys_webchannel_show",
+    "emarsys_webchannel_click",
+
+    "order",
+]
+
 
 # 🔴 CHANGE ONLY THIS LINE TO SWITCH
 ACTIVE_STRONG_SIGNAL_EVENTS = STRONG_SIGNAL_EVENTS_1
-# ACTIVE_STRONG_SIGNAL_EVENTS = STRONG_SIGNAL_EVENTS_1
+
