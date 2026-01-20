@@ -48,7 +48,21 @@ ALL_INTERACTION_EVENTS = [
     "order",
 ]
 
+top_10_churn_signal_features = [
+    "emarsys_cancel",
+    "emarsys_open",
+    "emarsys_block_bounce",
+    "emarsys_click",
+    "emarsys_sessions_content_category",
+    "emarsys_sessions_content_url",
+    "emarsys_sessions_content_tag",
+    "emarsys_sessions_view",
+    "emarsys_webchannel_click",
+    "emarsys_sessions_purchase",
+]
+
+
 
 # 🔴 CHANGE ONLY THIS LINE TO SWITCH
-ACTIVE_STRONG_SIGNAL_EVENTS = STRONG_SIGNAL_EVENTS_1
+ACTIVE_STRONG_SIGNAL_EVENTS = top_10_churn_signal_features
 
