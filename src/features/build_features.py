@@ -4,7 +4,7 @@ import numpy as np
 # -----------------------------------
 # Strong signal events (from EDA)
 # -----------------------------------
-from src.features.strong_events import STRONG_SIGNAL_EVENTS
+from src.features.strong_events import ACTIVE_STRONG_SIGNAL_EVENTS as STRONG_SIGNAL_EVENTS
 
 
 def filter_strong_events(df: pd.DataFrame) -> pd.DataFrame:
