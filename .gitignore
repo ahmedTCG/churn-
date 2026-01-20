@@ -1,29 +1,41 @@
-# python
 .venv/
 __pycache__/
-*.pyc
 .DS_Store
 
-# ignore ALL generated files
-data/**
-artifacts/**
-outputs/**
-notebook_exports/**
 
-# keep folder structure
-!data/
-!data/raw/
+
+*.parquet
+*.joblib
+*.csv
+
+.venv/
+__pycache__/
+.DS_Store
+
+# generated notebook exports
+notebook_exports/
+
+# --- data / outputs (never commit large files) ---
+data/raw/
+data/processed/
+data/features/
+artifacts/
+outputs/
+*.parquet
+*.joblib
+
+# --- keep folder structure but ignore generated contents ---
+data/raw/*
+data/processed/*
+data/features/*
+artifacts/*
+outputs/*
+notebook_exports/*
+
+# keep placeholder files so folders exist in git
 !data/raw/.gitkeep
-!data/processed/
 !data/processed/.gitkeep
-!data/features/
 !data/features/.gitkeep
-
-!artifacts/
 !artifacts/.gitkeep
-
-!outputs/
 !outputs/.gitkeep
-
-!notebook_exports/
 !notebook_exports/.gitkeep
