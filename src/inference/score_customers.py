@@ -31,8 +31,8 @@ def main():
 
     # Load model + feature list
     artifacts = PROJECT_ROOT / "artifacts"
-    model = joblib.load(artifacts / "churn_model_v1.joblib")
-    feature_list = json.loads((artifacts / "feature_list.json").read_text(encoding="utf-8"))
+    model = joblib.load(artifacts / "churn_model_timesplit.joblib")
+    feature_list = json.loads((artifacts / "feature_list_timesplit.json").read_text(encoding="utf-8"))
 
     X = feats.set_index("external_customerkey")
 
@@ -50,7 +50,7 @@ def main():
         "churn_probability": proba,
     }).sort_values("churn_probability", ascending=False)
 
-    out_path = PROJECT_ROOT / "outputs" / "churn_scores_v1.csv"
+    out_path = PROJECT_ROOT / "outputs" / "churn_scores_timesplit.csv"
     out_path.parent.mkdir(exist_ok=True)
     out.to_csv(out_path, index=False)
 
