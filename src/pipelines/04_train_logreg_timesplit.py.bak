@@ -2,39 +2,6 @@ from pathlib import Path
 import json
 import warnings
 
-
-# =============================
-# Pooled rolling-snapshot training
-# =============================
-POOLED_ROLLING_TRAINING = True
-ROLLING_STEP_DAYS = 30
-MAX_LOOKBACK_DAYS = 90
-MAX_POOL_SNAPSHOTS = 0  # 0 = all available
-
-def build_pooled_train_dataset(df, test_snapshot):
-    min_time = df["event_time"].min()
-    earliest_allowed = min_time + pd.Timedelta(days=MAX_LOOKBACK_DAYS)
-
-    parts = []
-    k = 1
-    while True:
-        snap = test_snapshot - pd.Timedelta(days=k * ROLLING_STEP_DAYS)
-        if snap < earliest_allowed:
-            break
-        ds = make_dataset(df, snap)
-        ds = ds.copy()
-        ds["_snapshot_time"] = snap
-        parts.append(ds)
-        k += 1
-        if MAX_POOL_SNAPSHOTS and len(parts) >= MAX_POOL_SNAPSHOTS:
-            break
-
-    if not parts:
-        raise ValueError("No snapshots available for pooled training")
-
-    return pd.concat(parts, ignore_index=True)
-
-
 import numpy as np
 import pandas as pd
 import joblib
@@ -110,10 +77,7 @@ def main():
     snap_test = max_time - pd.Timedelta(days=CHURN_WINDOW_DAYS)
     snap_train = max_time - pd.Timedelta(days=2 * CHURN_WINDOW_DAYS)
 
-    if POOLED_ROLLING_TRAINING:
-        train_ds = build_pooled_train_dataset(df, snap_test)
-    else:
-        train_ds = make_dataset(df, snap_train)
+    train_ds = make_dataset(df, snap_train)
     test_ds = make_dataset(df, snap_test)
 
     y_train = train_ds[TARGET].astype(int)

@@ -11,6 +11,7 @@ The pipeline:
 - Trains and evaluates a time-aware churn model
 - Scores customers and assigns risk buckets
 
+The final model is trained using pooled rolling time snapshots to improve robustness across seasons and customer behavior shifts.
 ---
 
 ## Churn Definition
@@ -87,20 +88,61 @@ Output:
 ### 4. Model Training & Evaluation
 **Script:** `src/pipelines/04_train_logreg_timesplit.py`
 
-- Uses **time-based train/test split**
-- Trains a **regularized logistic regression model**
-- Evaluates using:
-  - ROC-AUC
-  - PR-AUC
-  - Confusion matrix
-  - Classification report
+- Uses **strict time-based snapshots**
+- Training data is built by **pooling multiple historical snapshots**
+  preceding the test snapshot
+- This allows the model to learn from:
+  - Different seasons
+  - Multiple churn regimes
+  - Changes in customer behavior over time
 
-Artifacts saved:
+The model:
+- Is a **regularized logistic regression**
+- Uses only past behavior to predict future inactivity
+- Is evaluated on a strictly future-dated test snapshot
 
-artifacts/
-├── churn_model_timesplit.joblib
-├── feature_list_timesplit.json
-└── train_meta_timesplit.json
+Evaluation metrics:
+- ROC-AUC
+- PR-AUC
+- Confusion matrix
+- Classification report
+
+
+
+---
+
+## Model Validation
+
+The churn model is validated using **strict temporal validation** to ensure
+robustness across time and prevent data leakage.
+
+### 1. Single Time-Split Validation
+- Train on historical snapshots
+- Evaluate on the immediately following future snapshot
+- Ensures:
+  - No leakage between features and labels
+  - Realistic forward-looking evaluation
+
+This validation runs as part of the main training pipeline.
+
+---
+
+### 2. Rolling Snapshot Validation
+
+To assess stability across time and seasonality, the model is additionally
+evaluated using **rolling monthly snapshots**:
+
+- For each month:
+  - Train on historical data
+  - Evaluate on the following month
+- Covers the full available time range
+- Detects:
+  - Seasonal effects
+  - Changes in churn prevalence
+  - Temporal overfitting
+
+
+
 
 
 ---
