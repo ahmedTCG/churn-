@@ -59,6 +59,7 @@ top_10_churn_signal_features = [
     "emarsys_sessions_view",
     "emarsys_webchannel_click",
     "emarsys_sessions_purchase",
+    "order"
 ]
 
 
