@@ -1,34 +1,43 @@
-from pathlib import Path
 import pandas as pd
+from pathlib import Path
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
+RAW_PATH = Path("data/raw/customer_interactions_fact_2_years.csv")
+OUT_PATH = Path("data/processed/interactions.parquet")
 
-RAW_PATH = PROJECT_ROOT / "data" / "raw" / "customer_interactions_fact_2_years.csv"
-OUT_PATH = PROJECT_ROOT / "data" / "processed" / "interactions.parquet"
-OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+
+def make_processed_dataframe(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Production-friendly cleaning function.
+    EXACT same logic used by the pipeline.
+    No IO.
+    """
+    df = df.copy()
+
+    # ===== CLEANING LOGIC (KEEP THIS IDENTICAL TO TRAINING) =====
+    df["event_time"] = pd.to_datetime(df["event_time"], errors="coerce")
+    df["external_customerkey"] = df["external_customerkey"].astype(str).str.strip()
+    df["interaction_type"] = df["interaction_type"].astype(str).str.strip()
+
+    if "amount" in df.columns:
+        df["amount"] = pd.to_numeric(df["amount"], errors="coerce")
+
+    df = df.dropna(
+        subset=["external_customerkey", "event_time", "interaction_type"]
+    )
+    # ===========================================================
+
+    return df
+
 
 def main():
-    if not RAW_PATH.exists():
-        raise FileNotFoundError(f"Missing raw file: {RAW_PATH}")
+    raw_df = pd.read_csv(RAW_PATH)
+    processed_df = make_processed_dataframe(raw_df)
 
-    df = pd.read_csv(RAW_PATH, parse_dates=["event_time"], low_memory=False)
+    OUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    processed_df.to_parquet(OUT_PATH, index=False)
 
-    # Ensure datetime
-    df["event_time"] = pd.to_datetime(df["event_time"], errors="coerce")
+    print(f"OK → {OUT_PATH}")
 
-    # Drop critical nulls safely BEFORE casting
-    df = df.dropna(subset=["external_customerkey", "event_time", "interaction_type"]).copy()
-
-    # Standardize key string cols
-    df["interaction_type"] = df["interaction_type"].astype("string").str.strip()
-    df["external_customerkey"] = df["external_customerkey"].astype("string").str.strip()
-
-    for c in ["channel", "shop", "incoming_outgoing"]:
-        if c in df.columns:
-            df[c] = df[c].astype("string").str.strip()
-
-    df.to_parquet(OUT_PATH, index=False)
-    print("Wrote:", OUT_PATH, "rows:", len(df))
 
 if __name__ == "__main__":
     main()
