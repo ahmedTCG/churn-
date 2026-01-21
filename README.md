@@ -24,19 +24,19 @@ This is a **behavioral inactivity definition**, not an unsubscribe-based definit
 
 .
 ├── data/
-│   ├── raw/            # Raw input data
-│   ├── processed/      # Cleaned data and model datasets
-│   └── features/       # Customer-level feature snapshots
+│ ├── raw/ # Raw input data
+│ ├── processed/ # Cleaned data and model datasets
+│ └── features/ # Customer-level feature snapshots
 │
 ├── src/
-│   ├── pipelines/      # End-to-end pipeline steps
-│   ├── features/       # Feature engineering logic
-│   ├── inference/      # Scoring and postprocessing
-│   └── utils/          # Shared utilities
+│ ├── pipelines/ # End-to-end pipeline steps
+│ ├── features/ # Feature engineering logic
+│ ├── inference/ # Scoring and postprocessing
+│ └── utils/ # Shared utilities
 │
-├── artifacts/          # Trained models and metadata
-├── outputs/            # Scores and risk bucket outputs
-├── notebooks/          # Exploratory and analysis notebooks
+├── artifacts/ # Trained models and metadata
+├── outputs/ # Scores and risk bucket outputs
+├── notebooks/ # Exploratory and analysis notebooks
 └── README.md
 
 ---
