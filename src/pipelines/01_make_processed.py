@@ -1,7 +1,7 @@
 import pandas as pd
 from pathlib import Path
 
-RAW_PATH = Path("data/raw/customer_interactions_fact_2_years.csv")
+RAW_PATH = Path("data/raw/ubdated.csv")
 OUT_PATH = Path("data/processed/interactions.parquet")
 
 
